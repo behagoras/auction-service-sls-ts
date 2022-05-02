@@ -4,8 +4,11 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@functions/*": ["src/functions/*"],
-      "@libs/*": ["src/libs/*"]
+      "@Functions/*": ["src/functions/*"],
+      "@Libs/*": ["src/libs/*"],
+      "@Types/*": ["src/types/*"],
+      "@Resources/*": ["src/resources/*"],
+      "@Iams/*": ["src/iam/*"],
     }
   }
 }

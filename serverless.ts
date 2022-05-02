@@ -1,6 +1,7 @@
+import auctionFns from '@Functions/auction';
+import { AuctionsTableIam } from '@Iams/AunctionsTableIam';
+import { AuctionsTable } from '@Resources/AuctionsTable';
 import type { AWS } from '@serverless/typescript';
-
-import auctionFns from '@functions/auction';
 
 const serverlessConfiguration: AWS = {
   service: 'ts-base-project',
@@ -23,39 +24,13 @@ const serverlessConfiguration: AWS = {
     stage: "${opt:stage, 'dev'}",
     region: "${opt:region, 'us-east-1'}" as "us-east-1",
     iamRoleStatements: [
-      {
-        Effect: 'Allow',
-        Action: [
-          'dynamodb:PutItem',
-        ],
-        Resource: [
-          'arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/AuctionsTable',
-        ]
-      }
+      AuctionsTableIam,
     ]
   },
-  resources:{
+  resources: {
     // cloud formation syntax
     Resources: {
-      AuctionsTable: {
-        Type: 'AWS::DynamoDB::Table',
-        Properties: {
-          TableName: 'AuctionsTable',
-          BillingMode: 'PAY_PER_REQUEST',
-          AttributeDefinitions: [
-            {
-              AttributeName: 'id',
-              AttributeType: 'S', // S: string | N: number | B: binary
-            }
-          ],
-          KeySchema: [
-            { // partition key id of type Hash
-              AttributeName: 'id',
-              KeyType: 'HASH', // HASH | RANGE
-            }
-          ],
-        }
-      }
+      AuctionsTable,
     }
   },
   // import the function via paths
