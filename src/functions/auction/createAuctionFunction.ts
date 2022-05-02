@@ -1,8 +1,8 @@
-import schema from './createAuction.schema';
+import schema from './CreateAuctionSchema';
 import { handlerPath } from '@libs/handler-resolver';
 
 export default {
-  handler: `${handlerPath(__dirname)}/createAuction.handler.main`,
+  handler: `${handlerPath(__dirname)}/createAuctionHandler.main`,
   events: [
     {
       http: {

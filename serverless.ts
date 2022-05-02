@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
+import auctionFns from '@functions/auction';
 
 const serverlessConfiguration: AWS = {
   service: 'ts-base-project',
@@ -21,7 +21,9 @@ const serverlessConfiguration: AWS = {
     region: "${opt:region, 'us-east-1'}" as "us-east-1",
   },
   // import the function via paths
-  functions: { hello },
+  functions: {
+    auctionFns
+  },
   package: { individually: true },
   custom: {
     esbuild: {
