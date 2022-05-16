@@ -12,9 +12,9 @@ const dynamoDb = new DynamoDB.DocumentClient();
 
 
 const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, context) => {
+  console.log('createAuction handler');
   const { title } = event.body;
   const now = new Date();
-  console.log('hello world');
 
   const auction = {
     id: uuid(),

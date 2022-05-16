@@ -1,4 +1,4 @@
-import { createAuction } from '@Functions/auction';
+import { createAuction, getAuctions } from '@Functions/auction';
 import { AuctionsTableIam } from '@Iams/AunctionsTableIam';
 import { AuctionsTable } from '@Resources/AuctionsTable';
 import type { AWS } from '@serverless/typescript';
@@ -34,8 +34,9 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: { createAuction, },
+  functions: { createAuction, getAuctions, },
   package: { individually: true },
+
   custom: {
     AuctionsTableName: 'AuctionsTable-${self:provider.stage}',
     esbuild: {
