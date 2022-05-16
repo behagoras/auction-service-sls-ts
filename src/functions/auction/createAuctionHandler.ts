@@ -35,7 +35,6 @@ const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 
   return formatJSONResponse({
     auction,
-    event,
   }, 201);
 };
 
