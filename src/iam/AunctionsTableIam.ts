@@ -7,6 +7,6 @@ export const AuctionsTableIam: AwsIamPolicyStatements[0] =
     'dynamodb:PutItem',
   ],
   Resource: [
-    'arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/AuctionsTable',
+    'arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.AuctionsTableName}',
   ]
 }

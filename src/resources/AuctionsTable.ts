@@ -3,7 +3,7 @@ import { Resource } from "@Types/aws.types";
 export const AuctionsTable: Resource = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
-    TableName: 'AuctionsTable',
+    TableName: '${self:custom.AuctionsTableName}',
     BillingMode: 'PAY_PER_REQUEST',
     AttributeDefinitions: [
       {

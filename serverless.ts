@@ -1,10 +1,7 @@
-import auctionFns from '@Functions/auction';
+import { createAuction } from '@Functions/auction';
 import { AuctionsTableIam } from '@Iams/AunctionsTableIam';
 import { AuctionsTable } from '@Resources/AuctionsTable';
 import type { AWS } from '@serverless/typescript';
-// const { nodeExternalsPlugin } = require('esbuild-node-externals');
-
-
 const serverlessConfiguration: AWS = {
   service: 'ts-base-project',
   frameworkVersion: '3',
@@ -22,6 +19,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      AUCTIONS_TABLE_NAME: '${self:custom.AuctionsTableName}',
     },
     stage: "${opt:stage, 'dev'}",
     region: "${opt:region, 'us-east-1'}" as "us-east-1",
@@ -36,11 +34,10 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: {
-    auctionFns
-  },
+  functions: { createAuction, },
   package: { individually: true },
   custom: {
+    AuctionsTableName: 'AuctionsTable-${self:provider.stage}',
     esbuild: {
       bundle: true,
       minify: false,
@@ -50,13 +47,7 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
-      // plugins: [
-      //   nodeExternalsPlugin()
-      // ]
     },
-    // bundle: {
-    //   linting: false,
-    // }
   },
 };
 

@@ -1,1 +1,1 @@
-export {default} from './createAuctionFunction'
+export {default as createAuction} from './createAuctionFunction'

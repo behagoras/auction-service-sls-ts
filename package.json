@@ -9,7 +9,8 @@
     "deploy:dev": "sls deploy --aws-profile personal --verbose",
     "deploy:prod": "sls deploy --aws-profile personal --verbose --stage prod",
     "deploy:qa": "sls deploy --aws-profile personal --verbose --stage qa",
-    "deploy:fn": "sls deploy function --aws-profile personal --verbose --function auctionFns"
+    "deploy:fn": "sls deploy function --aws-profile personal --verbose --function auctionFns",
+    "info": "sls info --aws-profile personal --verbose"
   },
   "engines": {
     "node": ">=14.15.0"
