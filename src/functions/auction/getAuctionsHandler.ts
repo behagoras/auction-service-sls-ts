@@ -24,7 +24,6 @@ const getAuctions: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> 
 
   return formatJSONResponse({
     auctions,
-    event,
   }, 200);
 };
 
