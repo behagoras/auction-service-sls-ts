@@ -1,40 +1,30 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@Libs/api-gateway';
 import { formatJSONResponse } from '@Libs/api-gateway';
 import { middyfy } from '@Libs/lambda';
-import { DynamoDB } from 'aws-sdk';
-import { InternalServerError, NotFound } from 'http-errors';
+import { getSpecificAuctionService, placeBidService } from '@Services/auction.services';
+import { Forbidden } from 'http-errors';
 import GetAuctionsSchema from './placeBidSchema';
-
-const dynamoDb = new DynamoDB.DocumentClient();
 
 const placeBid: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event) => {
   console.log('placeBid handler');
-  const TableName = process?.env?.AUCTIONS_TABLE_NAME!;
+
   const { id = '' } = event.pathParameters!;
   const { amount } = event.body;
 
-  const params: DynamoDB.DocumentClient.UpdateItemInput = {
-    TableName,
-    Key: { id },
-    ExpressionAttributeValues: {
-      ':amount': amount,
-    },
-    UpdateExpression: 'set highestBid.amount = :amount',
-    ReturnValues: 'ALL_NEW',
+  const retrievedAuction = await getSpecificAuctionService(id)
+
+  const prevAmount = retrievedAuction.highestBid.amount;
+
+  if (prevAmount >= (amount)) {
+    throw new Forbidden(`Your bid must be higher than ${prevAmount}!`);
   }
 
-  let updatedAuction;
-
-  try {
-    const result = await dynamoDb.update(params).promise()
-    updatedAuction = result.Attributes
-  } catch (error) {
-    console.error(error);
-    throw new InternalServerError(JSON.stringify(error));
-  }
+  const updatedAuction = await placeBidService(id, { amount });
 
   return formatJSONResponse({
     updatedAuction,
+    prevAmount,
+    amount,
   }, 200);
 
 };

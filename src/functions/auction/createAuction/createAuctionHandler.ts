@@ -1,16 +1,11 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@Libs/api-gateway';
 import { formatJSONResponse } from '@Libs/api-gateway';
 import { middyfy } from '@Libs/lambda';
-import { DynamoDB } from 'aws-sdk';
+import { createAuctionService } from '@Services/auction.services';
+import { Auction, AuctionStatus } from '@Types/auction.types';
+import { InternalServerError } from 'http-errors';
 import { v4 as uuid } from 'uuid';
 import schema from './CreateAuctionSchema';
-import { InternalServerError } from 'http-errors';
-import { Auction, AuctionStatus } from '@Types/auction.types';
-
-
-
-const dynamoDb = new DynamoDB.DocumentClient();
-
 
 const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   console.log('createAuction handler');
@@ -28,10 +23,7 @@ const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   }
 
   try {
-    await dynamoDb.put({
-      TableName: process?.env?.AUCTIONS_TABLE_NAME!,
-      Item: auction,
-    }).promise();
+    createAuctionService(auction);
   } catch (error) {
     console.error(error);
     throw new InternalServerError(JSON.stringify(error));
