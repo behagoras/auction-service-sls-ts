@@ -5,22 +5,26 @@ import { DynamoDB } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import schema from './CreateAuctionSchema';
 import { InternalServerError } from 'http-errors';
+import { Auction, AuctionStatus } from '@Types/auction.types';
 
 
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
 
-const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, context) => {
+const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   console.log('createAuction handler');
   const { title } = event.body;
   const now = new Date();
 
-  const auction = {
+  const auction: Auction = {
     id: uuid(),
     title,
-    status: 'OPEN',
+    status: AuctionStatus.OPEN,
     createdAt: now.toISOString(),
+    highestBid: {
+      amount: 0,
+    }
   }
 
   try {
