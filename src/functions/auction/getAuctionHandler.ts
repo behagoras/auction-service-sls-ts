@@ -7,25 +7,30 @@ import GetAuctionsSchema from './GetAuctionsSchema';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-const getAuctions: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event, context) => {
-  console.log('getAuctions handler');
+const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event, context) => {
+  console.log('getAuction handler');
   const TableName = process?.env?.AUCTIONS_TABLE_NAME!;
-  let auctions: DynamoDB.DocumentClient.ItemList | undefined
-
+  let auction
+  const id = event.pathParameters?.id;
   try {
-    const result = await dynamoDb.scan({
+    const result = await dynamoDb.get({
       TableName,
+      Key: { id },
     }).promise()
-    auctions = result.Items
+
+    //   const result = await dynamoDb.scan({
+    //     TableName,
+    //   }).promise()
+    auction = result.Item
   } catch (error) {
     console.error(error);
     throw new InternalServerError(JSON.stringify(error));
   }
 
   return formatJSONResponse({
-    auctions,
+    auction,
     event,
   }, 200);
 };
 
-export const main = middyfy(getAuctions);
+export const main = middyfy(getAuction);
