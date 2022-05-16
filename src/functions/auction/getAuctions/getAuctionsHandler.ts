@@ -7,7 +7,7 @@ import GetAuctionsSchema from './GetAuctionsSchema';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-const getAuctions: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event, context) => {
+const getAuctions: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async () => {
   console.log('getAuctions handler');
   const TableName = process?.env?.AUCTIONS_TABLE_NAME!;
   let auctions: DynamoDB.DocumentClient.ItemList | undefined

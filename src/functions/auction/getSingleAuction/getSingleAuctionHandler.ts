@@ -3,12 +3,12 @@ import { formatJSONResponse } from '@Libs/api-gateway';
 import { middyfy } from '@Libs/lambda';
 import { DynamoDB } from 'aws-sdk';
 import { InternalServerError, NotFound } from 'http-errors';
-import GetAuctionsSchema from './GetAuctionsSchema';
+import GetAuctionsSchema from './GetSingleAuctionSchema';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event, context) => {
-  console.log('getAuction handler');
+const getSingleAuction: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> = async (event, context) => {
+  console.log('getSingleAuction handler');
   const TableName = process?.env?.AUCTIONS_TABLE_NAME!;
   let auction
   const { id = '' } = event.pathParameters!;
@@ -32,4 +32,4 @@ const getAuction: ValidatedEventAPIGatewayProxyEvent<typeof GetAuctionsSchema> =
   }, 200);
 };
 
-export const main = middyfy(getAuction);
+export const main = middyfy(getSingleAuction);
