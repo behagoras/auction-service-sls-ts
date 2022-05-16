@@ -1,4 +1,4 @@
-import { createAuctionFunction, getAuctionsFunction, getSingleAuctionFunction } from '@Functions/auction';
+import { createAuctionFunction, getAuctionsFunction, getSingleAuctionFunction, placeBidFunction } from '@Functions/auction';
 import { AuctionsTableIam } from '@Iams/AunctionsTableIam';
 import { AuctionsTable } from '@Resources/AuctionsTable';
 import type { AWS } from '@serverless/typescript';
@@ -37,7 +37,8 @@ const serverlessConfiguration: AWS = {
   functions: {
     createAuction: createAuctionFunction,
     getAuctions: getAuctionsFunction,
-    getSingleAuction: getSingleAuctionFunction
+    getSingleAuction: getSingleAuctionFunction,
+    placeBid: placeBidFunction,
   },
   package: { individually: true },
 
