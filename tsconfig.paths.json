@@ -9,6 +9,7 @@
       "@Types/*": ["src/types/*"],
       "@Resources/*": ["src/resources/*"],
       "@Iams/*": ["src/iam/*"],
+      "@Services/*": ["src/services/*"],
     }
   }
 }
