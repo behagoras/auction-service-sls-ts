@@ -14,6 +14,7 @@ const dynamoDb = new DynamoDB.DocumentClient();
 const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, context) => {
   const { title } = event.body;
   const now = new Date();
+  console.log('hello world');
 
   const auction = {
     id: uuid(),
@@ -24,7 +25,7 @@ const createAuction: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 
   try {
     await dynamoDb.put({
-      TableName: 'AuctionsTable',
+      TableName: process?.env?.AUCTIONS_TABLE_NAME || 'AuctionsTable',
       Item: auction,
     }).promise();
   } catch (error) {
