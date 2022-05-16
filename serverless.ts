@@ -2,6 +2,8 @@ import auctionFns from '@Functions/auction';
 import { AuctionsTableIam } from '@Iams/AunctionsTableIam';
 import { AuctionsTable } from '@Resources/AuctionsTable';
 import type { AWS } from '@serverless/typescript';
+// const { nodeExternalsPlugin } = require('esbuild-node-externals');
+
 
 const serverlessConfiguration: AWS = {
   service: 'ts-base-project',
@@ -48,6 +50,9 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+      // plugins: [
+      //   nodeExternalsPlugin()
+      // ]
     },
     // bundle: {
     //   linting: false,
